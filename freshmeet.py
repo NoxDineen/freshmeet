@@ -41,6 +41,7 @@ class RegexConverter(BaseConverter):
 
 app.url_map.converters['regex'] = RegexConverter
 
+@app.route('/<regex("[\d]{4}-[\d]{1,2}-[\d]{1,2}"):day>/')
 def list_reservations(day):
     day_reservations = g.db.execute(
         '''SELECT room_id, start_time, end_time, host, num_attendees, description
@@ -54,7 +55,7 @@ def list_reservations(day):
             num_attendees=reservation[4],
             description=reservation[5]
             )for reservation in day_reservations.fetchall()]
-    return render_template('TEMPLATE_NAME_HERE', reservations=reservations)
+    return jsonify(reservations)
 
 @app.route('/reservations', methods=['POST'])
 def add_reservation():
