@@ -16,8 +16,10 @@ PASSWORD = 'password'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
+
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
+
 
 def init_db():
     with closing(connect_db()) as db:
@@ -25,13 +27,32 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
+
 @app.before_request
 def before_request():
     g.db = connect_db()
 
+
 @app.teardown_request
 def teardown_request(exception):
     g.db.close()
+
+
+@app.route('/')
+def today_reservations():
+    day_reservations = g.db.execute(
+        '''SELECT room_id, start_time, end_time, host, num_attendees, description
+        FROM reservations 
+        WHERE date(start_time) = day OR date(end_time) = date('now')''')
+    reservations = [dict(
+            room=reservation[0],
+            start=reservation[1],
+            end=reservation[2],
+            host=reservation[3],
+            num_attendees=reservation[4],
+            description=reservation[5]
+            )for reservation in day_reservations.fetchall()]
+    return jsonify(reservations)
 
 
 class RegexConverter(BaseConverter):
@@ -41,7 +62,8 @@ class RegexConverter(BaseConverter):
 
 app.url_map.converters['regex'] = RegexConverter
 
-@app.route('/<regex("[\d]{4}-[\d]{1,2}-[\d]{1,2}"):day>/')
+
+@app.route('/<regex("[\d]{4}/[\d]{1,2}/[\d]{1,2}"):day>/')
 def list_reservations(day):
     day_reservations = g.db.execute(
         '''SELECT room_id, start_time, end_time, host, num_attendees, description
@@ -56,6 +78,7 @@ def list_reservations(day):
             description=reservation[5]
             )for reservation in day_reservations.fetchall()]
     return jsonify(reservations)
+
 
 @app.route('/reservations', methods=['POST'])
 def add_reservation():
