@@ -30,8 +30,8 @@ def before_request():
     g.db = connect_db()
 
 @app.teardown_request
-def teardown_request():
-    d.db.close()
+def teardown_request(exception):
+    g.db.close()
 
 
 class RegexConverter(BaseConverter):
