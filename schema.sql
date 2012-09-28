@@ -3,7 +3,7 @@ create table rooms (
     id integer prmary key autoincrement,
     name string not null,
     capacity integer not null,
-    type integer not null,
+    type string not null,
     num_whiteboards integer not null
     );
 
