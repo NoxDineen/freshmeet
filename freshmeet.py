@@ -32,5 +32,20 @@ def before_request():
 def teardown_request():
     d.db.close()
 
+def list_reservations(day):
+    day_reservations = g.db.execute(
+        '''SELECT room_id, start_time, end_time, host, num_attendees, description
+        FROM reservations 
+        WHERE date(start_time) = day OR date(end_time) = day''')
+    reservations = [dict(
+            room=reservation[0],
+            start=reservation[1],
+            end=reservation[2],
+            host=reservation[3],
+            num_attendees=reservation[4],
+            description=reservation[5]
+            )for reservation in day_reservations.fetchall()]
+    return render_template('TEMPLATE_NAME_HERE', reservations=reservations)
+
 if __name__ == '__main__':
     app.run()
