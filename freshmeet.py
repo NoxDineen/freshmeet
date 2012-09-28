@@ -1,5 +1,4 @@
 # import all the things!
-from __future__ import with_statement
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
         abort, render_template, flash
@@ -25,9 +24,28 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
-if __name__ == '__main__':
-    # print "hello"
-    app.run()
+@app.before_request
+def before_request():
+    g.db = connect_db()
+
+@app.teardown_request
+def teardown_request():
+    d.db.close()
+
+def list_reservations(day):
+    day_reservations = g.db.execute(
+        '''SELECT room_id, start_time, end_time, host, num_attendees, description
+        FROM reservations 
+        WHERE date(start_time) = day OR date(end_time) = day''')
+    reservations = [dict(
+            room=reservation[0],
+            start=reservation[1],
+            end=reservation[2],
+            host=reservation[3],
+            num_attendees=reservation[4],
+            description=reservation[5]
+            )for reservation in day_reservations.fetchall()]
+    return render_template('TEMPLATE_NAME_HERE', reservations=reservations)
 
 @app.route('/reservations', methods=['POST'])
 def add_reservation():
@@ -38,3 +56,5 @@ def add_reservation():
     flash('Your room reservation has been made.')
     return jsonify(status="ok")
 
+if __name__ == '__main__':
+    app.run()
