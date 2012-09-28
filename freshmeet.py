@@ -42,7 +42,7 @@ def teardown_request(exception):
 def show_schedule():
     cur = g.db.execute('select room_id, name, capacity, type, num_whiteboards from rooms order by type, room_id')
     rooms = [dict(id=row[0], name=row[1], capacity=row[2], type=row[3], num_whiteboards=row[4]) for row in cur.fetchall()]
-    return render_template('index.html', rooms = rooms)
+    return render_template('index.html', rooms = rooms, hours = range(7, 22))
 
 
 def today_reservations():

@@ -1,0 +1,14 @@
+table, th, td {
+	border:1px solid #0D80D8;
+}
+
+thead > td {
+	width: 200px;
+	font-weight:bold;
+}
+
+.ui-selected, .ui-selecting {
+	background-color:#0D80D8;
+	border-left:1px solid #FFF;
+	border-right:1px solid #FFF;
+}

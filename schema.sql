@@ -1,6 +1,6 @@
 drop table if exists rooms;
 create table rooms (
-    room_id integer prmary key auto_increment,
+    room_id integer primary key not null,
     name string not null,
     capacity integer not null,
     type string not null,
@@ -9,7 +9,7 @@ create table rooms (
 
 drop table if exists reservations;
 create table reservations (
-    reservation_id integer prmary key auto_increment,
+    reservation_id integer primary key not null,
     room_id integer not null,
     start_time datetime not null,
     end_time datetime not null,
@@ -125,4 +125,4 @@ insert into rooms (
         name, capacity, type, num_whiteboards
     ) values (
         'Loft', 100, 'loft', 0
-    )
+    );

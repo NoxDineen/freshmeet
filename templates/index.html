@@ -1,12 +1,47 @@
 {% extends "layout.html" %}
 {% block body %}
 	<table>
-		<th>
-			<td>Schedule</td>
-			{% for room in rooms %}
+		<thead>
+			<tr>
+				<td>Schedule</td>
+				{% for room in rooms %}
 				<td>{{ room.name }}</td>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody id="schedule">
+			{% for hour in hours %}
+			<tr>
+				<td class="non-select">{{ hour }}:00</td>
+				{% for room in rooms %}
+					<td class="selectable" data-hour="{{ hour }}" data-room="{{ room.id }}"/>
+				{% endfor %}
+			</tr>
 			{% endfor %}
-		</th>
-
+		</tbody>
 	</table>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var room = 0;
+			var startHour = 0;
+
+			$('#addReservation').click(function() {
+				addReservation();
+				return false;
+			});
+
+			$( "#schedule" ).selectable({
+				filter:'td.selectable',
+				stop: function(event, ui) {
+					var result = $( "#select-result" ).empty();
+					$( ".ui-selected", this ).each(function() {
+						var index = $( "#selectable li" ).index( this );
+						result.append( " #" + ( index + 1 ) );
+					});
+				}
+			});
+
+		});
+	</script>
 {% endblock %}
