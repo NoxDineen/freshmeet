@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+	<table>
+		<th>
+			<td>Schedule</td>
+			{% for room in rooms %}
+				<td>{{ room.name }}</td>
+			{% endfor %}
+		</th>
+
+	</table>
+{% endblock %}
