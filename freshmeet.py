@@ -6,7 +6,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from contextlib import closing
 
 # config ahoy
-DATABASE = '/db/freshmeet.db'
+DATABASE = 'db/freshmeet.db'
 DEBUG = True
 SECRET_KEY = 'supersecret'
 USERNAME = 'admin'
