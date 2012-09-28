@@ -1,12 +1,11 @@
 # import all the things!
-from __future__ import with_statement
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
         abort, render_template, flash
 from contextlib import closing
 
 # config ahoy
-DATABASE = '/db/freshmeet.db'
+DATABASE = 'db/freshmeet.db'
 DEBUG = True
 SECRET_KEY = 'supersecret'
 USERNAME = 'admin'
@@ -24,6 +23,14 @@ def init_db():
         with app.open_resource('schema.sql') as f:
             db.cursor().executescript(f.read())
         db.commit()
+
+@app.before_request
+def before_request():
+    g.db = connect_db()
+
+@app.teardown_request
+def teardown_request():
+    d.db.close()
 
 if __name__ == '__main__':
     app.run()
