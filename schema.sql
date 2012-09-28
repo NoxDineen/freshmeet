@@ -28,7 +28,7 @@ insert into rooms (
 insert into rooms (
         name, capacity, type, num_whiteboards
     ) values (
-        'Norhwest Territories', 5, 'ops', 2
+        'Northwest Territories', 5, 'ops', 2
     )
 
 insert into rooms (
