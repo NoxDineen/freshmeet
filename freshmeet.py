@@ -36,5 +36,5 @@ def add_reservation():
                  request.form['host'], request.form['num_attendees'], request.form['description']])
     g.db.commit()
     flash('Your room reservation has been made.')
-    return redirect(url_for('show_entries'))
+    return jsonify(status="ok")
 
