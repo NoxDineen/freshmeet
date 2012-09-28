@@ -6,7 +6,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from contextlib import closing
 
 # config ahoy
-DATABASE = '/db/freshmeet.db'
+DATABASE = 'db/freshmeet.db'
 DEBUG = True
 SECRET_KEY = 'supersecret'
 USERNAME = 'admin'
@@ -26,4 +26,15 @@ def init_db():
         db.commit()
 
 if __name__ == '__main__':
+    # print "hello"
     app.run()
+
+@app.route('/reservations', methods=['POST'])
+def add_reservation():
+    g.db.execute('INSERT INTO reservations (reservation_id, room_id, start_time, end_time, host, num_attendees, description) values (?, ?)',
+                 [request.form['reservation_id'], request.form['room_id'], request.form['start_time'], request.form['end_time'], 
+                 request.form['host'], request.form['num_attendees'], request.form['description']])
+    g.db.commit()
+    flash('Your reservation has been made.')
+    return redirect(url_for('show_entries'))
+
