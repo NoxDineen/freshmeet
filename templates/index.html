@@ -33,6 +33,19 @@
 
 			$( "#schedule" ).selectable({
 				filter:'td.selectable',
+				selecting: function(event, ui) {
+					var selected = $( ".ui-selecting");
+					if (selected.length > 1) {
+						var firstCell = selected[0];
+						var room = $(firstCell).data("room");
+
+						var selectedRoom = $(ui.selecting).data("room");
+						if (selectedRoom != room) {
+							$(ui.selecting).removeClass(".ui-selecting");
+						}
+					}
+				},
+
 				stop: function(event, ui) {
 					var result = $( "#select-result" ).empty();
 					$( ".ui-selected", this ).each(function() {
