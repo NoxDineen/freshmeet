@@ -1,4 +1,6 @@
 freshmeet
 =========
 
-September Hack-Off 
+Epic September Hack-Off 
+Starring Nox, Elisa & Anton
+
