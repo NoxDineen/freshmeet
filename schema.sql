@@ -120,3 +120,9 @@ insert into rooms (
     ) values (
         'Saskatchawan', 5, 'support', 1
     )
+
+insert into rooms (
+        name, capacity, type, num_whiteboards
+    ) values (
+        'Loft', 100, 'loft', 0
+    )
