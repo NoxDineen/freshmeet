@@ -1,7 +1,7 @@
 # import all the things!
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
-        abort, render_template, flash
+        abort, render_template, flash, jsonify
 from contextlib import closing
 
 # config ahoy
@@ -59,7 +59,6 @@ def add_reservation():
                  [request.form['reservation_id'], request.form['room_id'], request.form['start_time'], request.form['end_time'],
                  request.form['host'], request.form['num_attendees'], request.form['description']])
     g.db.commit()
-    flash('Your room reservation has been made.')
     return jsonify(status="ok")
 
 if __name__ == '__main__':
