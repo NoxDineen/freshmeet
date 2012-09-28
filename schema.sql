@@ -1,21 +1,23 @@
 drop table if exists rooms;
 create table rooms (
-    id integer prmary key autoincrement,
+    room_id integer prmary key auto_increment,
     name string not null,
     capacity integer not null,
     type string not null,
     num_whiteboards integer not null
-    );
+);
 
 drop table if exists reservations;
 create table reservations (
-    foreign key ( reservation_room_id ) references rooms ( room_id ),
+    reservation_id integer prmary key auto_increment,
+    room_id integer not null,
     start_time datetime not null,
     end_time datetime not null,
     host string not null,
     num_attendees integer not null,
-    description string
-    );
+    description string,
+    foreign key ( room_id ) references rooms ( room_id )
+);
 
 insert into rooms (
         name, capacity, type, num_whiteboards
