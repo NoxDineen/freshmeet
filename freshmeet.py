@@ -1,7 +1,7 @@
 # import all the things!
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
-        abort, render_template, flash
+        abort, render_template, flash, jsonify
 from werkzeug.routing import BaseConverter
 from contextlib import closing
 
