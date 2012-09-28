@@ -2,6 +2,7 @@
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
         abort, render_template, flash
+from werkzeug.routing import BaseConverter
 from contextlib import closing
 
 # config ahoy
@@ -31,6 +32,14 @@ def before_request():
 @app.teardown_request
 def teardown_request():
     d.db.close()
+
+
+class RegexConverter(BaseConverter):
+    def __init__(self, url_map, *items):
+        super(RegexConverter, self).__init__(url_map)
+        self.regex = items[0]
+
+app.url_map.converters['regex'] = RegexConverter
 
 def list_reservations(day):
     day_reservations = g.db.execute(
